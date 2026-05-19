@@ -173,18 +173,22 @@ a {
   transition: opacity 0.35s ease;
 }
 
-/* Blue overlay (visible on light nav) — pre-tinted to --accent so we
-   transition opacity only, avoiding the green-phase you saw while
-   animating between filter chains. */
+/* Blue overlay (visible on light nav) — use the PNG as a mask and fill
+   with the exact --accent color. Avoids the filter-chain approximation
+   that rendered as a brighter royal blue on mobile Safari. */
 .nav__logo::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('TW%20logos/LOGO_TW_WHITE.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  filter: brightness(0) saturate(100%) invert(14%) sepia(95%) saturate(2476%) hue-rotate(176deg) brightness(94%) contrast(101%);
+  background-color: var(--accent);
+  -webkit-mask-image: url('TW%20logos/LOGO_TW_WHITE.png');
+          mask-image: url('TW%20logos/LOGO_TW_WHITE.png');
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: left center;
+          mask-position: left center;
   opacity: 0;
   transition: opacity 0.35s ease;
   pointer-events: none;
@@ -1037,7 +1041,10 @@ a {
   .hero__cta {
     right: 28px;
     bottom: 80px;
-    display: none;
+    /* Keep visible on mobile as a fallback when iOS / Low Power Mode
+       blocks the background video from autoplaying. */
+    padding: 14px 18px;
+    font-size: 11px;
   }
 
   .ticker__inner span { font-size: 13px; padding: 0 14px; }
