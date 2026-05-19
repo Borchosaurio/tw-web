@@ -1,0 +1,38 @@
+# OS clutter
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code session state
+.claude/
+
+# Node (in case anything ever gets added)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Local env / secrets — never commit
+.env
+.env.*
+*.local
+
+# Logs / temp
+*.log
+*.tmp
+*.bak
+
+# Python helpers
+__pycache__/
+*.pyc
+
+# Build / dist
+dist/
+build/

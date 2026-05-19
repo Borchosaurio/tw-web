@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Thinkwild Studios</title>
+  <meta name="description" content="Work by Thinkwild Studios — audiovisual production, interactive experiences, and brand storytelling. Madrid.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Projects page overrides ── */
+    .page-header {
+      background: var(--light);
+      padding: calc(var(--nav-h) + 96px) 48px 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .page-header__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .page-header__back {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .page-header__back:hover { color: var(--accent); }
+
+    .page-header__sep {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
+    }
+
+    .page-header__count {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .page-header__count strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .page-header__title {
+      font-size: clamp(72px, 13vw, 168px);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+
+    .page-header__title .t-sans,
+    .page-header__title .t-serif { display: inline; }
+    .page-header__title em {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
+
+    .page-header__intro {
+      max-width: 620px;
+      margin: 40px 0 0;
+      font-size: clamp(18px, 1.4vw, 22px);
+      font-weight: 300;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+    }
+
+    .page-header__intro em {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
+
+    /* Filter chips — sit on the cream header, not the dark grid */
+    .projects-filter {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 48px 48px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 9px 18px;
+      border: 1px solid var(--border);
+      color: var(--gray);
+      background: transparent;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--light);
+    }
+
+    /* Toolbar — chips on the left, search on the right; wraps cleanly */
+    .projects-filter {
+      justify-content: space-between;
+      gap: 16px 12px;
+    }
+
+    .projects-filter__chips {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .projects-search {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px 0 14px;
+      height: 36px;
+      background: rgba(0,0,0,0.035);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--gray);
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+      min-width: 260px;
+    }
+
+    .projects-search:focus-within {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,57,76,0.05);
+    }
+
+    .projects-search__icon {
+      width: 14px;
+      height: 14px;
+      flex: none;
+    }
+
+    .projects-search input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      outline: none;
+      font-family: var(--sans);
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      color: var(--dark);
+      padding: 0;
+      min-width: 0;
+    }
+
+    .projects-search input::placeholder {
+      color: var(--gray);
+      opacity: 1;
+    }
+
+    .projects-search input::-webkit-search-cancel-button,
+    .projects-search input::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .projects-search__clear {
+      border: 0;
+      background: transparent;
+      font: inherit;
+      font-size: 20px;
+      line-height: 1;
+      color: var(--gray);
+      cursor: pointer;
+      padding: 0 0 2px;
+      transition: color 0.2s ease;
+    }
+
+    .projects-search__clear:hover { color: var(--accent); }
+
+    @media (max-width: 720px) {
+      .projects-search { width: 100%; min-width: 0; }
+    }
+
+    /* No-results empty state */
+    .projects-empty {
+      grid-column: 1 / -1;
+      padding: 96px 24px 120px;
+      text-align: center;
+      color: rgba(255,255,255,0.55);
+      font-family: var(--sans);
+      font-size: 15px;
+      letter-spacing: 0.02em;
+    }
+    .projects-empty em {
+      font-family: var(--serif);
+      font-style: italic;
+      color: rgba(255,255,255,0.9);
+      padding: 0 2px;
+    }
+
+    /* Full projects grid */
+    .projects-grid {
+      background: var(--dark);
+      color: var(--light);
+      padding: 0 0 120px;
+    }
+
+    .projects-grid__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+    }
+
+    .proj__media {
+      aspect-ratio: 4 / 3;
+    }
+
+    /* Service tag */
+    .proj__tag {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .proj__caption {
+      padding: 16px 22px 20px;
+    }
+
+    @media (max-width: 960px) {
+      .page-header {
+        padding: calc(var(--nav-h) + 56px) 28px 40px;
+      }
+
+      .projects-filter {
+        padding: 36px 28px 0;
+      }
+
+      .page-header__intro { margin-top: 28px; }
+
+      .projects-grid__inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .projects-grid__inner {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav is-light" id="nav">
+    <a href="index.html" class="nav__logo">
+      <img src="TW%20logos/LOGO_TW_WHITE.png" alt="Thinkwild">
+    </a>
+
+    <nav class="nav__links" aria-label="Primary navigation">
+      <a href="index.html#vocations" class="nav__link">Vocations</a>
+      <a href="projects.html" class="nav__link" style="opacity:1;">Work</a>
+      <a href="index.html#about" class="nav__link">This is us</a>
+      <a href="index.html#originals" class="nav__link">TW Originals</a>
+      <a href="index.html#contact" class="nav__link">Contact</a>
+    </nav>
+
+    <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- ===== MOBILE MENU ===== -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav class="mobile-menu__links">
+      <a href="index.html#vocations" class="mobile-menu__link">Vocations</a>
+      <a href="projects.html" class="mobile-menu__link">Work</a>
+      <a href="index.html#about" class="mobile-menu__link">This is us</a>
+      <a href="index.html#originals" class="mobile-menu__link">TW Originals</a>
+      <a href="index.html#contact" class="mobile-menu__link">Contact</a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <div>Madrid, Spain</div>
+      <div>info@thinkwildstudios.com</div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+   <div class="page-header__inner">
+    <div class="page-header__eyebrow">
+      <a href="index.html" class="page-header__back">← Home</a>
+      <div class="page-header__sep"></div>
+      <span class="page-header__count"><strong>61</strong> projects</span>
+    </div>
+    <h1 class="page-header__title">
+      <span class="t-sans">Our</span> <em>work</em>
+    </h1>
+    <p class="page-header__intro">
+      A decade-plus of <em>audiovisual</em> work — from <em>Olympic bids</em> and brand films to motion graphics, identity systems and original short films. A selection of what we've made for the clients we've loved working with.
+    </p>
+   </div>
+
+    <!-- Toolbar — filter chips + search; sit on the cream header for a clean intro -->
+    <div class="projects-filter">
+      <div class="projects-filter__chips">
+        <button class="filter-btn is-active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="filming">Filming</button>
+        <button class="filter-btn" data-filter="branded">Branded Content</button>
+        <button class="filter-btn" data-filter="film">Film</button>
+        <button class="filter-btn" data-filter="interactive">Interactive</button>
+        <button class="filter-btn" data-filter="ai">AI</button>
+        <button class="filter-btn" data-filter="originals">TW Originals</button>
+      </div>
+      <label class="projects-search">
+        <svg class="projects-search__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="projectsSearch" placeholder="Search projects, clients…" aria-label="Search projects" autocomplete="off">
+        <button type="button" class="projects-search__clear" aria-label="Clear search" hidden>×</button>
+      </label>
+    </div>
+  </div>
+
+  <!-- ===== PROJECTS SECTION ===== -->
+  <section class="projects-grid">
+    <div class="projects-grid__inner">
+
+      <!-- Featured -->
+      <article class="proj proj--featured reveal" data-category="branded">
+        <a href="project/layers-of-prevention.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/745503054.jpg" alt="Layers of Prevention" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics / Public Awareness</span>
+            <span class="proj__client">Anonymous Philanthropy</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Layers of Prevention</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 1 -->
+      <article class="proj reveal" data-category="branded ai">
+        <a href="project/stories-that-lead.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/stories-that-lead/01_CATHEDRALS.jpg" alt="Stories That Lead — Mark Fritz" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">AI-assisted Animation / Leadership</span>
+            <span class="proj__client">Mark Fritz</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Stories That Lead</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/metro-madrid.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/548807560.jpg" alt="Metro Madrid — Underground Stories" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Illustration / Motion Graphics</span>
+            <span class="proj__client">Metro Madrid</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Underground Stories</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/allianz-olympic-stories.html" class="proj__link">
+          <div class="proj__media">
+            <img src="thumbnails/allianz.avif" alt="Allianz — Olympic Stories" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Documentary / Animation</span>
+            <span class="proj__client">Allianz</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Olympic Stories</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 2 -->
+      <article class="proj reveal" data-category="branded">
+        <a href="project/decathlon-rebajas.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/497940605.jpg" alt="Decathlon — Rebajas 2021" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Advertising / Animation</span>
+            <span class="proj__client">Decathlon</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Rebajas 2021</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/comunidad-de-madrid.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/280203923.jpg" alt="Comunidad de Madrid — Institutional" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Illustration / Motion Graphics</span>
+            <span class="proj__client">Comunidad de Madrid</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Institutional</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 3 -->
+      <article class="proj reveal" data-category="originals">
+        <a href="project/orpheus.html" class="proj__link">
+          <div class="proj__media">
+            <img src="thumbnails/orpheus.avif" alt="Orpheus — Animated Daydream" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Film</span>
+            <span class="proj__client">Decaf Media</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Orpheus</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="film">
+        <a href="project/madrid-circus-festival.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/645212931.jpg" alt="Madrid Circus Festival — En Pista" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Illustration / Motion Graphics</span>
+            <span class="proj__client">Madrid Circus Festival</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">En Pista</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Featured 2 -->
+      <article class="proj proj--featured reveal" data-category="film">
+        <a href="project/magallanes.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/362573303.jpg" alt="Magallanes y Elcano — Sin Límites" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics / Illustration</span>
+            <span class="proj__client">Magallanes y Elcano</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Sin Límites</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 4 -->
+      <article class="proj reveal" data-category="branded">
+        <a href="project/cruz-roja.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/552900060.jpg" alt="Cruz Roja — Lotería Solidaria" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Illustration / Animation</span>
+            <span class="proj__client">Cruz Roja</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Lotería Solidaria</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="film">
+        <a href="project/vuela.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/328232064.jpg" alt="Vuela — Goya-nominated Short Film" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Short Film</span>
+            <span class="proj__client">Thinkwild</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Vuela · Goya Nominee</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 5 -->
+      <article class="proj reveal" data-category="film">
+        <a href="project/carmen-y-la-cuchara.html" class="proj__link">
+          <div class="proj__media">
+            <img src="thumbnails/carmen.jpg" alt="Carmen y la Cuchara de Palo" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Short Film</span>
+            <span class="proj__client">Thinkwild</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Carmen y la Cuchara de Palo</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/aces.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/548429680.jpg" alt="ACES — Animated Film" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Educational</span>
+            <span class="proj__client">ACES</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">A Beautiful Butterfly</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 6 -->
+      <article class="proj reveal" data-category="branded filming">
+        <a href="project/kuikma-coki.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/1181213837.jpg" alt="Kuikma — Brand Film" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Brand Film</span>
+            <span class="proj__client">Kuikma</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Hybrid Pro Coki Nieto</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/kuikma.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/778026900.jpg" alt="Kuikma — MS Pro & LS Pro" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Product Film / 3D</span>
+            <span class="proj__client">Kuikma</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">MS Pro &amp; LS Pro</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded filming">
+        <a href="project/balene.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/766940105.jpg" alt="Balene — TV Spot" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">TV Spot</span>
+            <span class="proj__client">Balene</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">TV Spot</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded filming">
+        <a href="project/peroni.html" class="proj__link">
+          <div class="proj__media">
+            <img src="thumbnails/peroni.png" alt="Peroni — La vita é fatta d'incontri" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Corporate Film</span>
+            <span class="proj__client">Peroni</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">La vita é fatta d'incontri</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/bomberos.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/326858605.jpg" alt="Bomberos — First Response" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics</span>
+            <span class="proj__client">Bomberos Madrid</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">First Response</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Row 7 -->
+      <article class="proj reveal" data-category="originals">
+        <a href="project/sim-patia.html" class="proj__link">
+          <div class="proj__media">
+            <img src="thumbnails/simpatia.avif" alt="Sim-Patia — Motion Graphics Film" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics</span>
+            <span class="proj__client">Sim-Patia</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">The Fishing Rod</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="originals">
+        <a href="project/temps.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/534089776.jpg" alt="Temps — An Orangey Tale" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Short</span>
+            <span class="proj__client">Thinkwild</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Temps</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Pass 2 — additions -->
+      <article class="proj reveal" data-category="branded">
+        <a href="project/coca-cola.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/696053713.jpg" alt="Coca-Cola — Videomapping de Navidad" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Videomapping / Illustration</span>
+            <span class="proj__client">Coca-Cola</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Videomapping de Navidad</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/leroy-merlin.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/416254083.jpg" alt="Leroy Merlin — Energy Saving" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Commercial</span>
+            <span class="proj__client">Leroy Merlin</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Energy Saving</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded filming">
+        <a href="project/samsung-sarasate.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/131641167.jpg" alt="Sarasate by Samsung" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Filming / Commercial</span>
+            <span class="proj__client">Samsung</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Sarasate</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="film filming">
+        <a href="project/cantabria-infinita.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/66814295.jpg" alt="Cantabria Infinita — ¿Sientes?" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Tourism / Commercial</span>
+            <span class="proj__client">Cantabria Infinita</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">¿Sientes?</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/beefeater.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/219881020.jpg" alt="Beefeater — MIXLDN 2016" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Commercial</span>
+            <span class="proj__client">Beefeater</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">MIXLDN 2016</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded filming">
+        <a href="project/genesys.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/399115613.jpg" alt="Genesys — Case Study" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Case Study</span>
+            <span class="proj__client">Genesys</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Santa Casa</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="film filming">
+        <a href="project/sofia-ellar.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/322054395.jpg" alt="Sofía Ellar — Bañarnos en Vaqueros" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Music Video</span>
+            <span class="proj__client">Sofía Ellar</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Bañarnos en Vaqueros</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded filming">
+        <a href="project/nervo-ballantines.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/190133224.jpg" alt="Nervo & Ballantines — Madrid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Music / Event</span>
+            <span class="proj__client">Nervo &amp; Ballantines</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Madrid Tour</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/deoleo.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/250284361.jpg" alt="Deoleo — Carapelli Experience" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Brand Experience</span>
+            <span class="proj__client">Deoleo</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Carapelli Experience</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/fina.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/fina/06.jpg" alt="FINA — World Aquatics" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports</span>
+            <span class="proj__client">FINA</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">World Aquatics</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/world-karate-federation.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/world-karate-federation/01.jpg" alt="World Karate Federation — Karate for Life" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports</span>
+            <span class="proj__client">World Karate Federation</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Karate for Life</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/riyadh-2030.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/riyadh-2030/01-riyadh-01.jpg" alt="Riyadh 2030 — Asian Games Bid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Bid</span>
+            <span class="proj__client">Riyadh 2030</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Asian Games</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/almaty-2022.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/213664314.jpg" alt="Almaty 2022 — Winter Games Bid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Bid</span>
+            <span class="proj__client">Almaty 2022</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Winter Games</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/runczech.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/runczech/02-event.jpg" alt="RunCzech — All Runners Are Beautiful" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Running / Animation</span>
+            <span class="proj__client">RunCzech</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">All Runners Are Beautiful</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/endesa.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/endesa/01-localizacion.png" alt="Endesa — Emergency Evacuation" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">3D Animation</span>
+            <span class="proj__client">Endesa</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Emergency Evacuation</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded filming">
+        <a href="project/ayvens-ecomotion.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/1121219980.jpg" alt="Ayvens — Ecomotion Tour 2025" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Event Coverage</span>
+            <span class="proj__client">Ayvens</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Ecomotion Tour 2025</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/wood-modulor.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/453676526.jpg" alt="S28 — Wood Modulor" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Architecture / Explainer</span>
+            <span class="proj__client">S28</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Wood Modulor</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded filming">
+        <a href="project/emov.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/196422957.jpg" alt="EMOV — Sustainable Mobility" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Commercial</span>
+            <span class="proj__client">EMOV</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Sustainable Mobility</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/madrid-2020.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/74818569.jpg" alt="Madrid 2020 — Olympic Bid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Bid</span>
+            <span class="proj__client">Madrid 2020</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Olympic Bid</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/lisbon-marathon.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/820794876.jpg" alt="Lisbon Marathon — Course Films" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Running / Motion Graphics</span>
+            <span class="proj__client">Lisbon</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Marathon Course</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/paralimpicos.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/paralimpicos/01-promesas.png" alt="Promesas Paralímpicas" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Identity</span>
+            <span class="proj__client">Paralímpicos</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Promesas</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded filming">
+        <a href="project/daflon.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/429292840.jpg" alt="Daflon — Servier" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Pharma / Animation</span>
+            <span class="proj__client">Daflon</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Servier</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/united-2026.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/276197163.jpg" alt="United 2026 — World Cup Bid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Bid</span>
+            <span class="proj__client">United 2026</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">World Cup Bid</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/canal-isabel-ii.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/150659977.jpg" alt="Canal de Isabel II — App Explainer" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Explainer</span>
+            <span class="proj__client">Canal de Isabel II</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">App Explainer</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/bono-turistico.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/647255777.jpg" alt="Bono Turístico — Comunidad de Madrid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics</span>
+            <span class="proj__client">Bono Turístico</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Comunidad de Madrid</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/decathlon-open-innovation.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/595181453.jpg" alt="Decathlon — Open Innovation" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Brand</span>
+            <span class="proj__client">Decathlon</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Open Innovation</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/just-cook.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/129107205.jpg" alt="Just Cook — Animated Spot" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics</span>
+            <span class="proj__client">Just Cook</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Animated Spot</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/stockholm-are-2026.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/340459741.jpg" alt="Stockholm Åre 2026 — Olympic Bid" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Bid</span>
+            <span class="proj__client">Stockholm Åre 2026</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Winter Games Bid</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/articus.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/770669907.jpg" alt="Articus 2022 — Christmas World" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Illustration / Campaign</span>
+            <span class="proj__client">Articus</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Christmas World</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/drivies.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/drivies/01-portada.jpg" alt="Drivies — App Spot" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics / App</span>
+            <span class="proj__client">Drivies</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">App Spot</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/daily-thoughts-foundation.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/105892477.jpg" alt="Daily Thoughts Foundation — Mark Fritz" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Non-Profit</span>
+            <span class="proj__client">Mark Fritz</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Daily Thoughts</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/cell-core.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/cell-core/01-thecellcore.jpg" alt="Cell Core — Brand Campaign" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Brand Campaign</span>
+            <span class="proj__client">Cell Core</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Brand Campaign</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded filming">
+        <a href="project/yunait.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/33023611.jpg" alt="Yunait — Hotel Comparison" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Commercial / Travel</span>
+            <span class="proj__client">Yunait</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Hotel Comparison</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded filming">
+        <a href="project/valencia-marathon.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/294452152.jpg" alt="Valencia Half Marathon — Course Film" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Running / 3D</span>
+            <span class="proj__client">Valencia</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Half Marathon Course</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/the-mentorizt.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/245224955.jpg" alt="The Mentorizt — Mark Fritz" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation / Leadership</span>
+            <span class="proj__client">The Mentorizt</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Be Better</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/kazakhstan-boxing.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/kazakhstan-boxing/03-london-hug.jpg" alt="Kazakhstan Boxing — Conference" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Global Sports / Bid</span>
+            <span class="proj__client">Kazakhstan Boxing</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Boxing Conference</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/clear-channel-radar.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/470104015.jpg" alt="Clear Channel — Radar" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">3D Animation</span>
+            <span class="proj__client">Clear Channel</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Radar</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-1" data-category="branded">
+        <a href="project/epoc.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/208709964.jpg" alt="EPOC — Health Awareness" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">3D Animation / Health</span>
+            <span class="proj__client">EPOC</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">A Quiet Battle</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal reveal-delay-2" data-category="branded">
+        <a href="project/linq3.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/262235239.jpg" alt="Linq3 — Zak & Chloe" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Animation</span>
+            <span class="proj__client">Linq3</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Zak &amp; Chloe</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="proj reveal" data-category="branded">
+        <a href="project/chef-market.html" class="proj__link">
+          <div class="proj__media">
+            <img src="project/images/chef-market/06-comida.jpg" alt="Chef Market — Brand Identity" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Brand Identity</span>
+            <span class="proj__client">Chef Market</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Brand Identity</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Last featured -->
+      <article class="proj proj--featured reveal" data-category="interactive">
+        <a href="project/tu-comunidad.html" class="proj__link">
+          <div class="proj__media">
+            <img src="https://vumbnail.com/219839739.jpg" alt="Tu Comunidad — Community Portal" loading="lazy">
+            <div class="proj__overlay"><span class="proj__arrow">→</span></div>
+          </div>
+          <div class="proj__caption">
+            <span class="proj__tag">Motion Graphics / Platform</span>
+            <span class="proj__client">Tu Comunidad</span>
+            <span class="proj__slash">/</span>
+            <span class="proj__name">Community Portal</span>
+          </div>
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="contact" id="contact" data-nav="dark">
+    <div class="contact__inner">
+      <div class="contact__top">
+        <h2 class="contact__headline">
+          Let's make something <em>wild</em> together.
+        </h2>
+        <a href="mailto:info@thinkwildstudios.com" class="contact__email">
+          info@thinkwildstudios.com
+        </a>
+        <a href="tel:+34608635645" class="contact__email" style="margin-top: 12px;">
+          +34 608 635 645
+        </a>
+      </div>
+
+      <div class="contact__bottom">
+        <div class="contact__logo">
+          <img src="TW%20logos/LOGO_TW_WHITE.png" alt="Thinkwild">
+        </div>
+
+        <nav class="contact__socials" aria-label="Social links">
+          <a href="https://vimeo.com/user7628081" target="_blank" rel="noopener noreferrer" aria-label="Vimeo">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.612-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.478 4.797z"/></svg>
+          </a>
+          <a href="https://instagram.com/thinkwildstudios" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="https://youtube.com/@thinkwildstudios" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://facebook.com/ThinkwildStudios" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
+          </a>
+        </nav>
+
+        <div class="contact__legal">
+          <span>© Thinkwild Studios 2026</span>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
