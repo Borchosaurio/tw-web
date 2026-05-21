@@ -1039,11 +1039,13 @@ a {
   }
 
   .hero__cta {
-    right: 28px;
-    bottom: 80px;
-    /* Keep visible on mobile as a fallback when iOS / Low Power Mode
-       blocks the background video from autoplaying. */
-    padding: 14px 18px;
+    /* Drop out of absolute positioning so the button flows as a flex
+       item under .hero__content — prevents the overlap with the
+       "Audiovisual Production Studio · Madrid, Spain" subtitle. */
+    position: static;
+    align-self: flex-start;
+    margin-top: 28px;
+    padding: 13px 18px;
     font-size: 11px;
   }
 
