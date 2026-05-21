@@ -1156,9 +1156,13 @@ a {
   animation: logoRight 290s linear infinite;
 }
 
-/* Pause on hover of individual row */
-.logo-row:hover .logo-row__track {
-  animation-play-state: paused;
+/* Pause on hover of individual row — desktop only.
+   On touch devices :hover fires on tap and sticks, freezing the
+   marquee until you tap elsewhere. (hover: hover) excludes touch. */
+@media (hover: hover) and (pointer: fine) {
+  .logo-row:hover .logo-row__track {
+    animation-play-state: paused;
+  }
 }
 
 .logo-row__inner {
@@ -1188,10 +1192,6 @@ a {
   transition: color 0.3s ease;
 }
 
-.logo-pill:hover span {
-  color: rgba(12, 12, 12, 0.65);
-}
-
 .logo-img {
   display: block;
   height: 80px;
@@ -1203,11 +1203,21 @@ a {
   transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
-.logo-pill:hover .logo-img {
-  opacity: 1;
-  /* Tint to --accent (#00394c). brightness(0) flattens any colored
-     source to black, then the chain reconstructs as deep teal-blue. */
-  filter: brightness(0) saturate(100%) invert(14%) sepia(95%) saturate(2476%) hue-rotate(176deg) brightness(94%) contrast(101%);
+/* Hover-only: brighten + recolor on devices with a real cursor.
+   On touch devices the :hover state sticks after a tap, which on
+   mobile Safari rendered as the un-tinted original logo (e.g. the
+   royal-blue Peroni you saw). Scoping prevents the bug entirely. */
+@media (hover: hover) and (pointer: fine) {
+  .logo-pill:hover span {
+    color: rgba(12, 12, 12, 0.65);
+  }
+
+  .logo-pill:hover .logo-img {
+    opacity: 1;
+    /* Tint to --accent (#00394c). brightness(0) flattens any colored
+       source to black, then the chain reconstructs as deep teal-blue. */
+    filter: brightness(0) saturate(100%) invert(14%) sepia(95%) saturate(2476%) hue-rotate(176deg) brightness(94%) contrast(101%);
+  }
 }
 
 @keyframes logoLeft {

@@ -340,8 +340,14 @@ if (document.readyState === 'complete') {
   window.addEventListener('load', setupLogoMarquee);
 }
 
+// Only rebuild on actual WIDTH changes. iOS Safari fires resize when
+// the address bar collapses/expands (height-only change) — rebuilding
+// the marquee mid-scroll caused the 2nd row to flicker / mis-render.
 let logoResizeTimer;
+let lastLogoViewportW = window.innerWidth;
 window.addEventListener('resize', () => {
+  if (window.innerWidth === lastLogoViewportW) return;
+  lastLogoViewportW = window.innerWidth;
   clearTimeout(logoResizeTimer);
   logoResizeTimer = setTimeout(setupLogoMarquee, 200);
 });
